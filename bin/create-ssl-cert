@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+##@Version       : 202202021753-git
+# @Author        : Jason Hempstead
+# @Contact       : jason@casjaysdev.com
+# @License       : WTFPL
+# @ReadME        : create-ssl-cert --help
+# @Copyright     : Copyright: (c) 2022 Jason Hempstead, Casjays Developments
+# @Created       : Wednesday, Feb 02, 2022 17:53 EST
+# @File          : create-ssl-cert
+# @Description   : Generate a self-signed SSL certificate
+# @TODO          :
+# @Other         :
+# @Resource      :
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+APPNAME="$(basename "$0")"
+VERSION="202202021753-git"
+USER="${SUDO_USER:-${USER}}"
+HOME="${USER_HOME:-${HOME}}"
+SRC_DIR="${BASH_SOURCE%/*}"
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Set bash options
+if [[ "$1" == "--debug" ]]; then shift 1 && set -xo pipefail && export SCRIPT_OPTS="--debug" && export _DEBUG="on"; fi
+trap 'exitCode=${exitCode:-$?};[ -n "$ENTRYPOINT_SH_TEMP_FILE" ] && [ -f "$ENTRYPOINT_SH_TEMP_FILE" ] && rm -Rf "$ENTRYPOINT_SH_TEMP_FILE" &>/dev/null' EXIT
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+SSL_DIR="${1:-/config/ssl}"
+if [[ ! -f "$SSL_DIR/localhost.crt" ]] || [[ ! -f "$SSL_DIR/localhost.key" ]]; then
+  openssl req \
+    -new \
+    -newkey rsa:4096 \
+    -days 3650 \
+    -nodes \
+    -x509 \
+    -subj "/C=US/ST=GA/L=Casjays\ Developments/O=CasjaysDev/OU=AlpineLinux\ SSL/CN=localhost" \
+    -keyout "$SSL_DIR/localhost.key" \
+    -out "$SSL_DIR/localhost.crt" \
+    -CAkey "$SSL_DIR/ca.crt"
+fi

@@ -28,7 +28,7 @@ casjaysdev/alpine:latest
 version: "2"
 services:
   alpine:
-    image: casjaysdev/alpine
+    image: casjaysdevdocker/alpine
     container_name: alpine
     environment:
       - TZ=America/New_York

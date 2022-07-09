@@ -29,7 +29,9 @@ RUN echo "${TZ}" > /etc/timezone; \
   findutils \
   grep \
   iproute2 \
-  sudo && \
+  sudo \
+  rsync \
+  zip && \
   rm -rf /var/cache/apk/* /tmp/* /var/tmp/* /root/.bashrc && \
   mv -f "/etc/profile.d/color_prompt.sh.disabled" "/etc/profile.d/color_prompt.sh" && \
   ln -sf "/bin/bash" "/bin/sh" && \
@@ -43,17 +45,18 @@ RUN echo "${TZ}" > /etc/timezone; \
 COPY ./bin/. /usr/local/bin/
 
 FROM scratch
+
 ARG BUILD_DATE="$(date +'%Y-%m-%d %H:%M')"
 
 LABEL \
   org.label-schema.name="alpine" \
   org.label-schema.description="Base Alpine Linux" \
-  org.label-schema.url="https://github.com/casjaysdev/alpine" \
-  org.label-schema.vcs-url="https://github.com/casjaysdev/alpine" \
+  org.label-schema.url="https://hub.docker.com/r/casjaysdevdocker/alpine" \
+  org.label-schema.vcs-url="https://github.com/casjaysdevdocker/alpine" \
   org.label-schema.build-date=$BUILD_DATE \
   org.label-schema.version=$BUILD_DATE \
   org.label-schema.vcs-ref=$BUILD_DATE \
-  org.label-schema.license="MIT" \
+  org.label-schema.license="WTFPL" \
   org.label-schema.vcs-type="Git" \
   org.label-schema.schema-version="latest" \
   org.label-schema.vendor="CasjaysDev" \

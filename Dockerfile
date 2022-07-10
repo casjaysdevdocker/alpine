@@ -1,13 +1,12 @@
 FROM alpine:latest as build
 
-ENV \
-  SHELL=/bin/bash; \
-  TERM=xterm-256color; \
-  HOSTNAME=${HOSTNAME:-casjaysdev-alpine}; \
-  TZ=${TZ:-America/New_York};
+ENV SHELL=/bin/bash \
+  TERM=xterm-256color  \
+  HOSTNAME=${HOSTNAME:-casjaysdev-alpine} \
+  TZ=${TZ:-America/New_York}
 
-RUN echo "${TZ}" > /etc/timezone; \
-  echo "${HOSTNAME}" >/etc/hostname; \
+RUN echo "${TZ}" > /etc/timezone && \
+  echo "${HOSTNAME}" >/etc/hostname && \
   apk -U upgrade && \
   apk add --no-cache --upgrade \
   openssl \
@@ -60,13 +59,13 @@ LABEL \
   org.label-schema.vcs-type="Git" \
   org.label-schema.schema-version="latest" \
   org.label-schema.vendor="CasjaysDev" \
-  maintainer="CasjaysDev <docker-admin@casjaysdev.com>" 
+  maintainer="CasjaysDev <docker-admin@casjaysdev.com>"
 
 ENV \
-  SHELL=/bin/bash; \
-  TERM=xterm-256color; \
-  HOSTNAME=${HOSTNAME:-casjaysdev-alpine}; \
-  TZ=${TZ:-America/New_York};
+  SHELL=/bin/bash \
+  TERM=xterm-256color \
+  HOSTNAME=${HOSTNAME:-casjaysdev-alpine} \
+  TZ=${TZ:-America/New_York}
 
 COPY --from=build /. /
 

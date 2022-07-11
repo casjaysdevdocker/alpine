@@ -29,8 +29,11 @@ trap 'exit 0' SIGINT SIGTERM
 # Set functions
 __exec_bash() {
   local cmd="${*:-/bin/bash}"
+  local exitCode=0
   echo "running command: $cmd"
-  $cmd || return 10
+  $cmd || exitCode=10
+  bash
+  return ${exitCode:-$?}
 }
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 __find() { ls -A "$*" 2>/dev/null; }

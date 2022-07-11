@@ -1,4 +1,4 @@
-FROM casjaysdevdocker/alpine:latest as build
+FROM alpine:latest as build
 
 ARG LICENSE=WTFPL   IMAGE_NAME=alpine   TIMEZONE=America/New_York   PORT=
 

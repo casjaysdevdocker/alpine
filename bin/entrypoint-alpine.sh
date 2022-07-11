@@ -8,10 +8,10 @@
 # @Copyright         :  Copyright: (c) 2022 Jason Hempstead, Casjays Developments
 # @Created           :  Monday, Jul 11, 2022 17:21 EDT
 # @File              :  entrypoint-alpine.sh
-# @Description       :  
-# @TODO              :  
-# @Other             :  
-# @Resource          :  
+# @Description       :
+# @TODO              :
+# @Other             :
+# @Resource          :
 # @sudo/root         :  no
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 APPNAME="$(basename "$0" 2>/dev/null)"
@@ -28,8 +28,8 @@ trap 'exit 0' SIGINT SIGTERM
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Set functions
 __exec_bash() {
-  local cmd="${*:-/bin/bash -l}"
-  exec $cmd || return 10
+  local cmd="${*:-/bin/bash}"
+  $cmd || return 10
 }
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 __find() { ls -A "$*" 2>/dev/null; }
@@ -95,13 +95,13 @@ healthcheck) # Docker healthcheck
 */bin/sh | */bin/bash | bash | shell | sh) # Launch shell
   shift 1
   echo "running command: $* in bash"
-  __exec_bash "${@:-/bin/bash}"
+  __exec_bash "${@:-h}"
   exitCode=$?
   ;;
 
 *) # Execute primary command
-  echo "running command: $*"
-  __exec_bash "${@:-/bin/bash}"
+  echo "running command: ${*:-bash}"
+  __exec_bash "${@:-}"
   exitCode=$?
   ;;
 esac

@@ -1,6 +1,9 @@
 FROM alpine:latest as build
 
-ARG LICENSE=WTFPL   IMAGE_NAME=alpine   TIMEZONE=America/New_York   PORT=
+ARG LICENSE=WTFPL \
+  IMAGE_NAME=alpine \
+  TIMEZONE=America/New_York \
+  PORT=
 
 ENV SHELL=/bin/bash \
   TERM=xterm-256color \

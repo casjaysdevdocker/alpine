@@ -30,7 +30,8 @@ RUN echo "${TZ}" > /etc/timezone && \
   iproute2 \
   sudo \
   rsync \
-  zip && \
+  zip \
+  tini && \
   rm -rf /var/cache/apk/* /tmp/* /var/tmp/* /root/.bashrc /bin/sh && \
   mv -f "/etc/profile.d/color_prompt.sh.disabled" "/etc/profile.d/color_prompt.sh" && \
   ln -sf "/bin/bash" "/bin/sh" && \
@@ -74,4 +75,4 @@ VOLUME [ "/root" ]
 
 HEALTHCHECK CMD [ "/usr/local/bin/entrypoint-alpine.sh", "healthcheck" ]
 ENTRYPOINT [ "/usr/local/bin/entrypoint-alpine.sh" ]
-CMD [ "/bin/bash", "-l" ]
+CMD [ "tini", "--" ]

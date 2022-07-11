@@ -1,7 +1,7 @@
 FROM alpine:latest as build
 
 ENV SHELL=/bin/bash \
-  TERM=xterm-256color  \
+  TERM=xterm-256color \
   HOSTNAME=${HOSTNAME:-casjaysdev-alpine} \
   TZ=${TZ:-America/New_York}
 
@@ -31,7 +31,7 @@ RUN echo "${TZ}" > /etc/timezone && \
   sudo \
   rsync \
   zip && \
-  rm -rf /var/cache/apk/* /tmp/* /var/tmp/* /root/.bashrc && \
+  rm -rf /var/cache/apk/* /tmp/* /var/tmp/* /root/.bashrc /bin/sh && \
   mv -f "/etc/profile.d/color_prompt.sh.disabled" "/etc/profile.d/color_prompt.sh" && \
   ln -sf "/bin/bash" "/bin/sh" && \
   ln -sf "/usr/share/zoneinfo/${TZ}" /etc/localtime && \

@@ -7,10 +7,8 @@ ENV SHELL=/bin/bash \
   HOSTNAME=penguin \
   TZ=$TIMEZONE
 
-RUN mkdir -p /bin/ /config/ /data/ && \
-  rm -Rf /bin/.gitkeep /config/.gitkeep /data/.gitkeep && \
-  apk update -U --no-cache && \
-  pk add --no-cache --upgrade \
+RUN apk update -U --no-cache && \
+  apk add --no-cache --upgrade \
   openssl \
   bash \
   bash-completion \
@@ -34,6 +32,8 @@ RUN mkdir -p /bin/ /config/ /data/ && \
   rsync \
   zip \
   tini && \
+  mkdir -p /bin/ /config/ /data/ && \
+  rm -Rf /bin/.gitkeep /config/.gitkeep /data/.gitkeep && \
   rm -rf /var/cache/apk/* /tmp/* /var/tmp/* /root/.bashrc /bin/sh && \
   mv -f "/etc/profile.d/color_prompt.sh.disabled" "/etc/profile.d/color_prompt.sh" && \
   ln -sf "/bin/bash" "/bin/sh" && \

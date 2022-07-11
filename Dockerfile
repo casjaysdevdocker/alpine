@@ -1,9 +1,12 @@
 FROM alpine:latest as build
 
+ARG NAME=alpine \
+  TZ=America/New_York
+
 ENV SHELL=/bin/bash \
   TERM=xterm-256color \
-  HOSTNAME=${HOSTNAME:-casjaysdev-alpine} \
-  TZ=${TZ:-America/New_York}
+  HOSTNAME=${HOSTNAME:-casjaysdev-$NAME} \
+  TZ=${TZ}
 
 RUN echo "${TZ}" > /etc/timezone && \
   echo "${HOSTNAME}" >/etc/hostname && \
@@ -49,7 +52,7 @@ FROM scratch
 ARG BUILD_DATE="$(date +'%Y-%m-%d %H:%M')"
 
 LABEL \
-  org.label-schema.name="alpine" \
+  org.label-schema.name="$HOSTNAME" \
   org.label-schema.description="Base Alpine Linux" \
   org.label-schema.url="https://hub.docker.com/r/casjaysdevdocker/alpine" \
   org.label-schema.vcs-url="https://github.com/casjaysdevdocker/alpine" \

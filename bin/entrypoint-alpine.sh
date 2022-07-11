@@ -95,7 +95,7 @@ healthcheck) # Docker healthcheck
 */bin/sh | */bin/bash | bash | shell | sh) # Launch shell
   shift 1
   echo "running command: $* in bash"
-  __exec_bash "${@:-h}"
+  __exec_bash "${@:-}"
   exitCode=$?
   ;;
 

@@ -80,8 +80,6 @@ EXPOSE $PORT
 
 COPY --from=build /. /
 
-ENTRYPOINT [ "/bin/bash", "-c" ]
+ENTRYPOINT [ "/usr/local/bin/entrypoint-alpine.sh" ]
 
 HEALTHCHECK CMD [ "/usr/local/bin/entrypoint-alpine.sh", "healthcheck" ]
-
-CMD [ "/usr/local/bin/entrypoint-alpine.sh" ]

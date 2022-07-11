@@ -16,10 +16,9 @@ docker run -d \
 --name alpine \
 --hostname casjaysdev-alpine \
 -e TZ=${TIMEZONE:-America/New_York} \
--v $PWD/alpine/data:/data \
--v $PWD/alpine/config:/config \
--p 80:80 \
-casjaysdev/alpine:latest
+-v $HOME/.local/share/docker/storage/alpine/alpine/data:/data \
+-v $HOME/.local/share/docker/storage/alpine/alpine/config:/config \
+casjaysdevdocker/alpine:latest
 ```
 
 ### via docker-compose
@@ -34,14 +33,12 @@ services:
       - TZ=America/New_York
       - HOSTNAME=casjaysdev-alpine
     volumes:
-      - $HOME/.local/share/docker/storage/alpine/data:/data
-      - $HOME/.local/share/docker/storage/alpine/config:/config
-    ports:
-      - 80:80
+      - $HOME/.local/share/docker/storage/alpine/data:/data:z
+      - $HOME/.local/share/docker/storage/alpine/config:/config:z
     restart: always
 ```
 
 ## Authors  
 
-🤖 Jason Hempstead: [Github](https://github.com/Jason Hempstead) [Docker](https://hub.docker.com/Jason Hempstead) 🤖  
-⛵ CasjaysDev: [Github](https://github.com/casjaysdev) [Docker](https://hub.docker.com/casjaysdev) ⛵  
+🤖 Jason Hempstead: [Github](https://github.com/casjay) [Docker](https://hub.docker.com/u/casjay) 🤖  
+⛵ CasjaysDev: [Github](https://github.com/casjaysdev) [Docker](https://hub.docker.com/u/casjaysdev) ⛵  

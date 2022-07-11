@@ -1,17 +1,16 @@
-FROM alpine:latest as build
+FROM casjaysdevdocker/alpine:latest as build
 
-ARG NAME=alpine \
-  TZ=America/New_York
+ARG LICENSE=WTFPL   IMAGE_NAME=alpine   TIMEZONE=America/New_York   PORT=
 
 ENV SHELL=/bin/bash \
   TERM=xterm-256color \
-  HOSTNAME=${HOSTNAME:-casjaysdev-$NAME} \
-  TZ=${TZ}
+  HOSTNAME=penguin \
+  TZ=$TIMEZONE
 
-RUN echo "${TZ}" > /etc/timezone && \
-  echo "${HOSTNAME}" >/etc/hostname && \
-  apk -U upgrade && \
-  apk add --no-cache --upgrade \
+RUN mkdir -p /bin/ /config/ /data/ && \
+  rm -Rf /bin/.gitkeep /config/.gitkeep /data/.gitkeep && \
+  apk update -U --no-cache && \
+  pk add --no-cache --upgrade \
   openssl \
   bash \
   bash-completion \
@@ -46,37 +45,40 @@ RUN echo "${TZ}" > /etc/timezone && \
   sed -i 's|root:x:.*|root:x:0:0:root:/root:/bin/bash|g' "/etc/passwd"
 
 COPY ./bin/. /usr/local/bin/
+COPY ./config/. /config/
+COPY ./data/. /data/
 
 FROM scratch
-
 ARG BUILD_DATE="$(date +'%Y-%m-%d %H:%M')"
 
-LABEL \
-  org.label-schema.name="$HOSTNAME" \
-  org.label-schema.description="Base Alpine Linux" \
+LABEL org.label-schema.name="alpine" \
+  org.label-schema.description="containerized version of alpine" \
   org.label-schema.url="https://hub.docker.com/r/casjaysdevdocker/alpine" \
   org.label-schema.vcs-url="https://github.com/casjaysdevdocker/alpine" \
   org.label-schema.build-date=$BUILD_DATE \
   org.label-schema.version=$BUILD_DATE \
   org.label-schema.vcs-ref=$BUILD_DATE \
-  org.label-schema.license="WTFPL" \
+  org.label-schema.license="$LICENSE" \
   org.label-schema.vcs-type="Git" \
   org.label-schema.schema-version="latest" \
   org.label-schema.vendor="CasjaysDev" \
   maintainer="CasjaysDev <docker-admin@casjaysdev.com>"
 
-ENV \
-  SHELL=/bin/bash \
-  TERM=xterm-256color \
-  HOSTNAME=${HOSTNAME:-casjaysdev-alpine} \
-  TZ=${TZ:-America/New_York}
+ENV SHELL="/bin/bash" \
+  TERM="xterm-256color" \
+  HOSTNAME="casjaysdev-alpine" \
+  TZ="${TZ:-America/New_York}"
+
+WORKDIR /root
+
+VOLUME ["/root","/config","/data"]
+
+EXPOSE $PORT
 
 COPY --from=build /. /
 
-WORKDIR /root
-VOLUME [ "/root" ]
+ENTRYPOINT [ "/bin/bash", "-c" ]
 
 HEALTHCHECK CMD [ "/usr/local/bin/entrypoint-alpine.sh", "healthcheck" ]
-ENTRYPOINT ["/sbin/tini", "-svv",  "--"]
 
 CMD [ "/usr/local/bin/entrypoint-alpine.sh" ]

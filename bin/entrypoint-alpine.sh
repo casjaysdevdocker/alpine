@@ -29,7 +29,7 @@ trap 'exit 0' SIGINT SIGTERM
 # Set functions
 __exec_bash() {
   local cmd="${*:-/bin/bash}"
-  echo "running command: ${*:-bash}"
+  echo "running command: $cmd"
   $cmd || return 10
 }
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

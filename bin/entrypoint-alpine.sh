@@ -29,6 +29,7 @@ trap 'exit 0' SIGINT SIGTERM
 # Set functions
 __exec_bash() {
   local cmd="${*:-/bin/bash}"
+  echo "running command: ${*:-bash}"
   $cmd || return 10
 }
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -94,13 +95,11 @@ healthcheck) # Docker healthcheck
 
 */bin/sh | */bin/bash | bash | shell | sh) # Launch shell
   shift 1
-  echo "running command: $* in bash"
   __exec_bash "${@:-}"
   exitCode=$?
   ;;
 
 *) # Execute primary command
-  echo "running command: ${*:-bash}"
   __exec_bash "${@:-}"
   exitCode=$?
   ;;

@@ -77,5 +77,6 @@ WORKDIR /root
 VOLUME [ "/root" ]
 
 HEALTHCHECK CMD [ "/usr/local/bin/entrypoint-alpine.sh", "healthcheck" ]
-ENTRYPOINT [ "/usr/local/bin/entrypoint-alpine.sh" ]
-CMD [ "tini", "--" ]
+ENTRYPOINT ["/sbin/tini", "-svv",  "--"]
+
+CMD [ "/usr/local/bin/entrypoint-alpine.sh" ]

@@ -24,15 +24,29 @@ if [[ "$1" == "--debug" ]]; then shift 1 && set -xo pipefail && export SCRIPT_OP
 trap 'exitCode=${exitCode:-$?};[ -n "$ENTRYPOINT_SH_TEMP_FILE" ] && [ -f "$ENTRYPOINT_SH_TEMP_FILE" ] && rm -Rf "$ENTRYPOINT_SH_TEMP_FILE" &>/dev/null' EXIT
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-SSL_DIR="${1:-/config/ssl}"
+# Source file
+[[ -f "/config/.ssl.env" ]] && . "/config/.ssl.env"
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Default variables
+SSL_DIR="${SSL_DIR:-/config/ssl}"
+COUNTRY="${COUNTRY:-US}"
+STATE="${STATE:-GA}"
+CITY="${CITY:-}"
+UNIT="${UNIT:-AlpineLinux}"
+ORG="${ORG:-Casjays\ Developments}"
+CN="${CN:-localhost}"
+DAYS_VALID="${DAYS_VALID:-3650}"
+RSA="${RSA:-4096}"
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+SSL_DIR="${1:-$SSL_DIR}"
 if [[ ! -f "$SSL_DIR/localhost.crt" ]] || [[ ! -f "$SSL_DIR/localhost.key" ]]; then
   openssl req \
     -new \
-    -newkey rsa:4096 \
-    -days 3650 \
+    -newkey rsa:$RSA \
+    -days $DAYS_VALID \
     -nodes \
     -x509 \
-    -subj "/C=US/ST=GA/L=Casjays\ Developments/O=CasjaysDev/OU=AlpineLinux\ SSL/CN=localhost" \
+    -subj "/C=$COUNTRY/ST=$STATE/L=$CITY/O=$ORG/OU=$UNIT\ SSL/CN=$CN" \
     -keyout "$SSL_DIR/localhost.key" \
     -out "$SSL_DIR/localhost.crt" \
     -CAkey "$SSL_DIR/ca.crt"

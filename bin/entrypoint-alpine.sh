@@ -46,6 +46,11 @@ CONFIG_DIR="${CONFIG_DIR:-$(__find /config/ 2>/dev/null | grep '^' || false)}"
 # Additional variables
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# import variables from file
+[[ -f "/root/env.sh" ]] && . "/root/env.sh"
+[[ -f "/config/.env.sh" ]] && . "/config/.env.sh"
+[[ -f "/root/env.sh" ]] && [[ ! -f "/config/.env.sh" ]] && cp -Rf "/root/env.sh" "/config/.env.sh"
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Export variables
 export TZ HOSTNAME
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

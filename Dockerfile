@@ -7,10 +7,12 @@ ARG LICENSE=WTFPL \
 
 ENV SHELL=/bin/bash \
   TERM=xterm-256color \
-  HOSTNAME=penguin \
+  HOSTNAME=${HOSTNAME:-casjaysdev-$IMAGE_NAME} \
   TZ=$TIMEZONE
 
-RUN apk update -U --no-cache && \
+RUN mkdir -p /bin/ /config/ /data/ && \
+  rm -Rf /bin/.gitkeep /config/.gitkeep /data/.gitkeep && \
+  apk update -U --no-cache && \
   apk add --no-cache --upgrade \
   openssl \
   bash \
@@ -55,7 +57,7 @@ FROM scratch
 ARG BUILD_DATE="$(date +'%Y-%m-%d %H:%M')"
 
 LABEL org.label-schema.name="alpine" \
-  org.label-schema.description="containerized version of alpine" \
+  org.label-schema.description="Containerized version of alpine" \
   org.label-schema.url="https://hub.docker.com/r/casjaysdevdocker/alpine" \
   org.label-schema.vcs-url="https://github.com/casjaysdevdocker/alpine" \
   org.label-schema.build-date=$BUILD_DATE \
@@ -80,6 +82,6 @@ EXPOSE $PORT
 
 COPY --from=build /. /
 
-ENTRYPOINT [ "/usr/local/bin/entrypoint-alpine.sh" ]
+HEALTHCHECK CMD ["/usr/local/bin/entrypoint-alpine.sh", "healthcheck"]
 
-HEALTHCHECK CMD [ "/usr/local/bin/entrypoint-alpine.sh", "healthcheck" ]
+ENTRYPOINT ["/usr/local/bin/entrypoint-alpine.sh"]

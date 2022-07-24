@@ -83,5 +83,6 @@ EXPOSE $PORT
 COPY --from=build /. /
 
 HEALTHCHECK CMD ["/usr/local/bin/entrypoint-alpine.sh", "healthcheck"]
+ENTRYPOINT [  "tini", "-p", "SIGTERM", "--" ]
+CMD [ "/usr/local/bin/entrypoint-alpine.sh" ]
 
-ENTRYPOINT ["/usr/local/bin/entrypoint-alpine.sh"]
